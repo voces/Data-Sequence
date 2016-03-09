@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Data Sequencer</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="util.js"></script>
+        <script src="control.js"></script>
+        <script src="workerController.js"></script>
+        <script src="fileUpload.js"></script>
+        <script src="delim.js"></script>
+        <script src="seq.js"></script>
+        <script src="result.js"></script>
+        <script src="main.js"></script>
+    </head>
+    <body>
+        <h1>Data Sequencer</h1>
+
+        <section id="file-upload">
+            <h2 id="file-upload-header">Drag data file here</h2>
+            <h4>Or, if you prefer...</h4>
+            <button id="file-upload-button">Select data file from your computer</button>
+            <input id="file-upload-input" type="file">
+        </section>
+
+        <section id="delim">
+            <div>
+                <label>Row delimiter</label>
+                <span class="help" title="The delimiter that separate each row of data. Common options: '\n' or '\r\n'.">?</span>
+                <br>
+                <input id="delim-row" placeholder="Row delimiter" value="\n">
+            </div>
+            <div>
+                <label>Column delimiter</label>
+                <span class="help" title="The delimiter that separate each column within a row of data. Common options: '\t' or ','.">?</span>
+                <br>
+                <input id="delim-col" placeholder="Column delimiter">
+            </div>
+            <!-- <div>
+                <span>Header row</span><br>
+                <div class="slide">
+                    <input type="radio" id="delim-header-yes" name="delim-header"></input><label for="delim-header-yes">Yes</label>
+                    <input type="radio" id="delim-header-no" name="delim-header"></input><label for="delim-header-no">No</label>
+                </div>
+            </div> -->
+            <pre id="delim-text"></pre>
+        </section>
+
+        <section id="seq" class="multitag">
+            <span class="select">
+              <label>Bin columns</label><br>
+              <select id="seq-bin" multiple></select>
+            </span>
+            <span class="select">
+              <label>Sequence column</label><br>
+              <select id="seq-seq" multiple></select>
+            </span>
+            <span class="select">
+              <label>Carry columns</label><br>
+              <select id="seq-carry" multiple></select>
+            </span>
+        </section>
+
+        <section id="results">
+            <fieldset>
+                <legend>Delimeters</legend>
+                <div>
+                    <label>Row</label>
+                    <span class="help" title="The delimiter that separate each row of data. Commonly a new line character (\n).">?</span>
+                    <br>
+                    <input id="results-row" placeholder="Row delimiter" value="\n">
+                </div>
+                <div>
+                    <label>Column</label>
+                    <span class="help" title="The delimiter that separate each column within a row of data. Commonly a tab (\t) or comma.">?</span>
+                    <br>
+                    <input id="results-col" placeholder="Column delimiter" value="\t">
+                </div>
+                <div>
+                    <label>Sequence</label>
+                    <span class="help" title="The delimiter that separate sequence entires. Commonly a semicolon (;).">?</span>
+                    <br>
+                    <input id="results-seq" placeholder="Sequence delimiter" value=";">
+                </div>
+                <div>
+                    <label>Sub Sequence</label>
+                    <span class="help" title="The delimiter that separate each value in a sequence entry. Commonly a space ( ).">?</span>
+                    <br>
+                    <input id="results-sub-seq" placeholder="Sequence delimiter" value=" ">
+                </div>
+            </fieldset>
+            <pre id="results-text"></pre>
+            <button id="results-save-button">Save file</button>
+            <input id="results-save-input" type="file" nwsaveas>
+        </section>
+
+        <footer id="controls">
+            <button id="controls-back">Back</button>
+            <button id="controls-next">Next</button>
+        </footer>
+    </body>
+</html>

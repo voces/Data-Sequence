@@ -1,0 +1,216 @@
+
+html {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+
+    font-family: Roboto, Arial, sans-serif;
+}
+
+body {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+h1 {
+    text-align: center;
+}
+
+input {
+    padding: 0.5em;
+}
+
+button {
+    background-color: #55f;
+    border: none;
+    padding:0.5em;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+}
+
+section {
+    position: absolute;
+    left: 1em;
+    right: 1em;
+    bottom: 1em;
+    top: 4em;
+}
+
+.help {
+    border-radius: 50%;
+    background-color: #ccc;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    float: right;
+    cursor: pointer;
+    width: 1em;
+    height: 1em;
+}
+
+.slide {
+    padding-top: 6px;
+    font-size: 13.3333px;
+}
+
+.slide input[type="radio"] {
+    display: none;
+}
+
+.slide label {
+    padding: 0.5em;
+    border: 1px inset;
+    width: 2em;
+    display: inline-block;
+    margin-right: -5px;
+    font-weight: bold;
+    color: gray;
+}
+
+.slide :checked + label {
+    background-color: #55f;
+    color: white;
+}
+
+.multitag-input {
+    display: inline-block;
+    outline: none;
+    border: none;
+}
+
+select > option {
+    padding: 0.25em;
+}
+
+select > option::selection {
+    background: red;
+}
+
+#delim, #seq, #results {
+    display: none;
+}
+
+#file-upload {
+
+    border: medium dashed #ccc;
+    color: #ccc;
+
+    text-align: center;
+}
+
+#file-upload h4 {
+    margin-bottom: 0.33em;
+}
+
+#file-upload input[type="file"] {
+    display: none;
+}
+
+#delim > div {
+    display: inline-block;
+    /*padding-top: 2em;*/
+    padding-right: 2em;
+}
+
+#delim > div:last-of-type {
+    padding-right: 0;
+}
+
+#delim-text, #results-text {
+    resize: none;
+    margin-top: 1em;
+    white-space: pre;
+    word-wrap: normal;
+    width: 34em;
+    overflow: hidden;
+    height: 6em;
+}
+
+#delim-text::first-line, #results-text::first-line {
+    font-weight: bold;
+}
+
+#seq {
+    height: 10.5em;
+    overflow: hidden;
+    /*overflow-y: auto;*/
+    /*overflow-x: hidden;*/
+    width: 420px;
+    /*border: 1px solid #ccc;*/
+
+    white-space: nowrap;
+}
+
+#seq .select {
+  width: 32%;
+  display: inline-block;
+  height: 100%;
+  vertical-align: top;
+}
+
+#seq .select select {
+  width: 100%;
+  display: inline-block;
+  height: calc(100% - 1.5em);
+}
+
+#seq-seq > option::after {
+    content: attr(data-order);
+    float: right;
+    color: blue;
+}
+
+#seq-seq:focus > option::after {
+    color: white;
+}
+
+#results fieldset {
+    padding: 0.25em 0 0 1em;
+    border: none;
+    border-top: 1px solid #ddd;
+}
+
+#results div {
+    display: inline-block;
+    /*padding-top: 2em;*/
+    padding-right: 1em;
+}
+
+#results div:first-of-type {
+    margin-left: -1em;
+}
+
+#results div:last-of-type {
+    padding-right: 0;
+}
+
+#results div input {
+    width: 7.6em;
+}
+
+#results input[type="file"] {
+    display: none;
+}
+
+#results-save-button {
+    position: absolute;
+    bottom: 1em;
+    right: 2em;
+}
+
+#results-text {
+    height: 6em;
+}
+
+#controls {
+    display: none;
+    position: absolute;
+    bottom: 1em;
+    right: 2em;
+}
