@@ -1,60 +1,11 @@
 {
-    "inject-js-end": "",
-    "chromium-args": "",
-    "additional_trust_anchors": [],
-    "version": "0.1.0",
-    "webexe_settings": {
-        "linux-x32": true,
-        "linux-x64": true,
-        "force_download": false,
-        "windows-x32": true,
-        "windows-x64": true,
-        "nw_version": "0.12.3",
-        "uncompressed_folder": false,
-        "mac-x32": true,
-        "mac-x64": true,
-        "export_dir": "output",
-        "custom_script": "",
-        "download_dir": "C:/Users/verit/AppData/Local/Web2Executable/Web2Executable/files/downloads",
-        "nw_compression_level": 0
-    },
-    "main": "index.html",
-    "window": {
-        "kiosk": false,
-        "exe_icon": "",
-        "resizable": false,
-        "transparent": false,
-        "show_in_taskbar": true,
-        "icon": "",
-        "always-on-top": false,
-        "show": true,
-        "visible": true,
-        "as_desktop": false,
-        "toolbar": false,
-        "kiosk_emulation": false,
-        "width": 600,
-        "fullscreen": false,
-        "frame": true,
-        "height": 250,
-        "position": "",
-        "mac_icon": "",
-        "title": "Data Sequencer"
-    },
-    "single-instance": true,
-    "inject-js-start": "",
-    "description": "",
-    "node-main": "",
-    "node-remote": "",
-    "keywords": [],
-    "webkit": {
-        "java": false,
-        "page-cache": false,
-        "plugin": false
-    },
-    "user-agent": "",
-    "js-flags": "--harmony",
-    "app_name": "dataSequence",
-    "snapshot": "",
     "name": "Data Sequencer",
-    "nodejs": true
+    "main": "index.html",
+    "js-flags": "--harmony",
+    "window": {
+        "title": "Data Sequencer",
+        "resizable": false,
+        "width": 600,
+        "height": 250
+    }
 }
