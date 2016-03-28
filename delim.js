@@ -4,8 +4,8 @@
 
     let controls = window.controls,
         worker = window.worker,
-        file = () => window.file,
-
+        file = window.file,
+        
         delim, delimRow, delimCol, delimHeaderYes, delimHeaderNo, delimText;
 
     document.addEventListener("DOMContentLoaded", function(e) {
@@ -17,19 +17,19 @@
         // delimHeaderNo = document.getElementById("delim-header-no");
         delimText = document.getElementById("delim-text");
 
-        delimRow.addEventListener("keyup", (e) => worker.postMessage({row: delimRow.value}));
-        delimCol.addEventListener("keyup", () => worker.postMessage({col: delimCol.value}));
+        delimRow.addEventListener("keyup", () => worker.send({row: delimRow.value}));
+        delimCol.addEventListener("keyup", () => worker.send({col: delimCol.value}));
 
         // delimHeaderYes.addEventListener("change", enableHeader);
         // delimHeaderNo.addEventListener("change", disableHeader);
 
         window.sections.push({
             container: delim,
-            focus: () => {console.log(file); worker.postMessage({
+            focus: () => worker.send({
                 file: file(),
                 row: delimRow.value,
                 col: delimCol.value
-            })}
+            })
         });
 
     });
@@ -83,8 +83,9 @@
     }
 
     window.delim = {
-        rowEvent: (message) => delimRow.value = escapesToReadable(message.row),
-        colEvent: (message) => delimCol.value = escapesToReadable(message.col),
+        rowEvent: (message) => {console.log("rowEvent", message); delimRow.value = escapesToReadable(message.row);},
+        colEvent: (message) => {console.log("colEvent", message); delimCol.value = escapesToReadable(message.col);},
+        // colEvent: (message) => delimCol.value = escapesToReadable(message.col),
         sampleEvent: (message) => delimText.textContent = prepareStringTable(message.sample, 6, 8, 8)
     };
 

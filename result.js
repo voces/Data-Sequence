@@ -27,12 +27,7 @@
         resultsSeq.addEventListener("keyup", requestExportSample);
         resultsSubSeq.addEventListener("keyup", requestExportSample);
 
-        resultsSaveInput.addEventListener("change", () => worker.postMessage({export: {
-            row: resultsRow.value,
-            col: resultsCol.value,
-            seq: resultsSeq.value,
-            subSeq: resultsSubSeq.value
-        }}));
+        resultsSaveInput.addEventListener("change", saveInput);
 
         window.sections.push({container: results, hideControls: true});
 
@@ -42,8 +37,22 @@
 
     });
 
+    function saveInput() {
+
+        worker.send({export: {
+            row: resultsRow.value,
+            col: resultsCol.value,
+            seq: resultsSeq.value,
+            subSeq: resultsSubSeq.value,
+            path: resultsSaveInput.files[0].path
+        }});
+
+        resultsSaveInput.value = ""
+
+    }
+
     function requestExportSample() {
-        worker.postMessage({
+        worker.send({
             export: {
                 row: resultsRow.value,
                 col: resultsCol.value,
@@ -74,7 +83,7 @@
     }
 
     window.result = {
-        seqEvent: (message) => requestExportSample(),
+        seqEvent: message => requestExportSample(),
         resultEvent: resultEvent
     };
 

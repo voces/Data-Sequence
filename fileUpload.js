@@ -68,11 +68,9 @@
 
     });
 
-    Object.defineProperty(window, "file", {
-        get: () => {
-            if (fileUploadInput) return fileUploadInput.files[0]
-            else return null;
-        }
-    });
+    window.file = () => {
+        if (fileUploadInput) return fileUploadInput.files[0].path;
+        else return null;
+    }
 
 }(window));

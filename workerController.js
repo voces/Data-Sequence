@@ -1,16 +1,26 @@
 
 (function(window) {
 
-    let worker = new Worker("worker.js");
-    worker.addEventListener("message", function(e) {
-        workerMessage(e.data);
-    });
+    const path = require('path');
+
+    let worker = require("child_process").fork("worker.js");
+
+    // worker.stdout.on('data', function(data) {
+    //     console.log('stdout: ' + data);
+    // });
+
+    worker.on("message", e => workerMessage(e));
+
+    worker.on("error", (e, e2, e3) => console.error(e, e2, e3));
+    worker.on("close", e => console.error(e));
 
     function workerMessage(message) {
 
-        if (typeof message.row !== "undefined") delim.rowEvent(message);
+        console.log(message);
+
         if (typeof message.col !== "undefined") delim.colEvent(message);
-        // if (typeof message.header !== "undefined") updateHeader(message.header);
+        if (typeof message.row !== "undefined") delim.rowEvent(message);
+        //For some reason, execution dies here if rowEvent is called...
 
         if (typeof message.sample !== "undefined") {
             delim.sampleEvent(message);
@@ -22,7 +32,7 @@
             // resultsText.textContent = prepareStringTable(message.sampleSeq, 4, 8, 8);
 
         if (typeof message.result !== "undefined") result.resultEvent(message);
-        
+
     }
 
     window.worker = worker;

@@ -1,20 +1,53 @@
+"use strict";
+
+// process.on('uncaughtException', e => process.send(e));
+
+const fs = require("fs"),
+    readline = require("readline");
 
 let rowDelim = false, colDelim = false,
     rawData = false, rawRows = false, rows = false, sequencedData = false;
     // header = undefined;
 
-function fileRead() {
+function readFile(filePath) {
 
-    // console.log("fileRead");
+    if (rowDelim && (rowDelim.source === "\\n" || rowDelim.source === "\\n\\r" || rowDelim.source === "\\r\\n" || rowDelim.source === "\\r")) {
 
-    rawData = this.result.replace(/\n\r/g, "\n")
-                         .replace(/\r\n/g, "\n")
-                         .replace(/\r/g, "\n")
-                         .replace(/\r/g, "");
+        let lineReader = readline.createInterface({
+                input: fs.createReadStream(filePath)
+            }),
+            flag = true,
+            count = 0;
 
-    // console.log({res: this.result, data: rawData});
+        rawRows = [];
 
-    if (rowDelim) calcRows();
+        lineReader.on("line", line => {
+            count++;
+            if (rawRows.push(line) >= 8 && flag) {
+                flag = false;
+
+                if (colDelim) calcCols();
+                else detectColDelim();
+            }
+
+        });
+
+        lineReader.on("close", () => {
+            process.send({count: count});
+
+            if (colDelim) calcCols();
+            else detectColDelim();
+            
+            // if (colDelim) calcCols();
+            // else detectColDelim();
+        });
+
+    } else {
+
+        let stream = fs.createReadStream(filePath);
+
+
+    }
 
 }
 
@@ -58,9 +91,13 @@ function detectColDelim() {
         // console.log("found");
         colDelim = "";
         for (let prop in charTable) colDelim += prop;
-        self.postMessage({row: rowDelim, col: colDelim});
+
+        colDelim = new RegExp(colDelim);
+
+        process.send({row: rowDelim.source, col: colDelim.source});
         calcCols();
     }// else console.log("not found");
+
 }
 
 function calcRows() {
@@ -102,7 +139,7 @@ function calcCols() {
 
     // if (rows.length > 1) detectHeader();
 
-    self.postMessage({sample: sample, row: rowDelim, col: colDelim});
+    process.send({sample: sample});
 
     for (let i = sampleEnd; i < rawRows.length; i++)
         rows[i] = rawRows[i].split(colDelim);
@@ -167,7 +204,7 @@ function sequenceData(opts) {
     sequencedData.push(opts.bins.concat([opts.seq.join("iNn3rSeQD3liM;")]).concat(opts.carrys));
     for (let id in bins) sequencedData.push(id.split("bRe4K;").concat([bins[id].join("s3qDeL1M;")]).concat(carrys[id]));
 
-    self.postMessage({seq: true});
+    process.send({seq: true});
 
 }
 
@@ -198,28 +235,36 @@ function exportData(opts, sample) {
     s = s.replace(/s3qDeL1M;/g, unEscapesToReadable(opts.seq));
     s = s.replace(/iNn3rSeQD3liM;/g, unEscapesToReadable(opts.subSeq));
 
-    self.postMessage({result: s, sample: sample});
+    if (sample) process.send({result: s, sample: sample});
+    else {
+
+        fs.writeFile(opts.path, s);
+
+    }
 
 }
 
-self.addEventListener("message", function(e) {
+process.on("message", function(e) {
 
-    // console.log("message", e.data);
+    process.send({input: e});
 
-    if (e.data.file) {
-        let reader = new FileReader();
-        reader.addEventListener("load", fileRead);
-        reader.readAsText(e.data.file);
+    if (e.row) rowDelim = new RegExp(e.row);
+    if (e.col) colDelim = new RegExp(e.col);
+
+    if (e.file) {
+        readFile(e.file);
+
+        // let reader = new FileReader();
+        // reader.addEventListener("load", fileRead);
+        // reader.readAsText(e.data.file);
+        return;
     }
 
-    if (e.data.row) rowDelim = new RegExp(e.data.row);
-    if (e.data.col) colDelim = new RegExp(e.data.col);
+    if (e.row) calcRows();
+    if (e.col && !e.row) calcCols();
 
-    if (e.data.row) calcRows();
-    if (e.data.col && !e.data.row) calcCols();
+    if (typeof e.seq !== "undefined") sequenceData(e.seq);
 
-    if (typeof e.data.seq !== "undefined") sequenceData(e.data.seq);
-
-    if (typeof e.data.export !== "undefined") exportData(e.data.export, e.data.sample ? true : false);
+    if (typeof e.export !== "undefined") exportData(e.export, e.sample ? true : false);
 
 }, false);

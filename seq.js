@@ -19,7 +19,7 @@
         seqSeq.addEventListener("change", seqChange);
 
         window.sections.push({container: seq, blur: () =>
-            worker.postMessage({seq: {
+            worker.send({seq: {
                 bins: util.getSelectOptions(seqBin),
                 seq: seqSeqValues,
                 carrys: util.getSelectOptions(seqCarry)

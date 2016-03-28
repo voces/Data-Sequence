@@ -66,7 +66,10 @@
         if (sections[position].hideControls) controls.style.display = "none";
         else controls.style.display = "block";
 
-        if (sections[position].focus) sections[position].focus();
+        if (sections[position].focus) {
+            sections[position].focus();
+            console.log("focus", position);
+        }
 
     }
 
