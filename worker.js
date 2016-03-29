@@ -37,17 +37,19 @@ function readFile(filePath) {
 
             if (colDelim) calcCols();
             else detectColDelim();
-            
+
             // if (colDelim) calcCols();
             // else detectColDelim();
         });
 
-    } else {
+    } else
 
-        let stream = fs.createReadStream(filePath);
+        fs.readFile(filePath, (err, result) => {
 
+            rawData = result;
+            if (rowDelim) calcRows();
 
-    }
+        });
 
 }
 
@@ -141,8 +143,9 @@ function calcCols() {
 
     process.send({sample: sample});
 
-    for (let i = sampleEnd; i < rawRows.length; i++)
-        rows[i] = rawRows[i].split(colDelim);
+    // for (let i = sampleEnd; i < rawRows.length; i++)
+    //     if (typeof rawRows[i] === "string")
+    //         rows[i] = rawRows[i].split(colDelim);
 
     // self.postMessage({rawRows: rawRows, row: rowDelim, col: colDelim});
 
@@ -180,21 +183,23 @@ function sequenceData(opts) {
     for (let i = 0; i < opts.seq.length; i++) seqIndices.push(rows[0].indexOf(opts.seq[i]));
     for (let i = 0; i < opts.carrys.length; i++) carryIndices.push(rows[0].indexOf(opts.carrys[i]));
 
-    for (let i = 1; i < rows.length; i++) {
+    for (let i = 1; i < rawRows.length; i++) {
 
-        let id = [], values = [];
+        let row = rawRows[i].split(colDelim),
 
-        for (let n = 0; n < binIndices.length; n++) id.push(rows[i][binIndices[n]]);
+            id = [], values = [];
+
+        for (let n = 0; n < binIndices.length; n++) id.push(row[binIndices[n]]);
         id = id.join("bRe4K;");
 
         if (typeof bins[id] === "undefined") {
             bins[id] = [];
 
             carrys[id] = [];
-            for (let n = 0; n < carryIndices.length; n++) carrys[id].push(rows[i][carryIndices[n]]);
+            for (let n = 0; n < carryIndices.length; n++) carrys[id].push(row[carryIndices[n]]);
         }
 
-        for (let n = 0; n < seqIndices.length; n++) values.push(rows[i][seqIndices[n]]);
+        for (let n = 0; n < seqIndices.length; n++) values.push(row[seqIndices[n]]);
 
         bins[id].push(values.join("iNn3rSeQD3liM;"));
         // bins[id].push(rows[i][seqIndex]);
