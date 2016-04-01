@@ -139,17 +139,7 @@ function calcCols() {
         sample.push(rows[i]);
     }
 
-    // if (rows.length > 1) detectHeader();
-
     process.send({sample: sample});
-
-    // for (let i = sampleEnd; i < rawRows.length; i++)
-    //     if (typeof rawRows[i] === "string")
-    //         rows[i] = rawRows[i].split(colDelim);
-
-    // self.postMessage({rawRows: rawRows, row: rowDelim, col: colDelim});
-
-    // console.log(rawRows.slice(0));
 
 }
 
@@ -241,11 +231,7 @@ function exportData(opts, sample) {
     s = s.replace(/iNn3rSeQD3liM;/g, unEscapesToReadable(opts.subSeq));
 
     if (sample) process.send({result: s, sample: sample});
-    else {
-
-        fs.writeFile(opts.path, s);
-
-    }
+    else fs.writeFile(opts.path, s);
 
 }
 

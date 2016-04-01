@@ -4,6 +4,7 @@
     let control = window.control,
         worker = window.worker,
         util = window.util,
+        file = window.file,
 
         results, resultsRow, resultsCol, resultsSeq, resultsSubSeq, resultsSaveButton, resultsSaveInput, resultsText,
 
@@ -23,19 +24,41 @@
         resultsSaveButton.addEventListener("click", () => resultsSaveInput.click());
 
         resultsRow.addEventListener("keyup", requestExportSample);
-        resultsCol.addEventListener("keyup", requestExportSample);
+        resultsCol.addEventListener("keyup", () => {updateSaveAsDefault(); requestExportSample()});
         resultsSeq.addEventListener("keyup", requestExportSample);
         resultsSubSeq.addEventListener("keyup", requestExportSample);
 
         resultsSaveInput.addEventListener("change", saveInput);
 
-        window.sections.push({container: results, hideControls: true});
+        window.sections.push({
+            name: "result",
+            container: results,
+            hideControls: false,
+            disableNext: true,
+            focus: updateSaveAsDefault
+        });
 
         /*setInterval(function() {
             console.log(new Date().getTime());
         }, 100);*/
 
     });
+
+    function updateSaveAsDefault() {
+
+        let filePath = file().split("\\").pop().split("/").pop();
+
+        filePath = filePath.split(".");
+        filePath.pop();
+        filePath = filePath.join(".");
+
+        switch (resultsCol.value) {
+            case "\\t": filePath += ".tsv"; break;
+            case ",": filePath += ".csv"; break;
+        }
+
+        resultsSaveInput.setAttribute("nwsaveas", filePath);
+    }
 
     function saveInput() {
 

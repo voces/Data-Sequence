@@ -5,7 +5,7 @@
     let controls = window.controls,
         worker = window.worker,
         file = window.file,
-        
+
         delim, delimRow, delimCol, delimHeaderYes, delimHeaderNo, delimText;
 
     document.addEventListener("DOMContentLoaded", function(e) {
@@ -83,9 +83,8 @@
     }
 
     window.delim = {
-        rowEvent: (message) => {console.log("rowEvent", message); delimRow.value = escapesToReadable(message.row);},
-        colEvent: (message) => {console.log("colEvent", message); delimCol.value = escapesToReadable(message.col);},
-        // colEvent: (message) => delimCol.value = escapesToReadable(message.col),
+        rowEvent: (message) => delimRow.value = escapesToReadable(message.row),
+        colEvent: (message) => delimCol.value = escapesToReadable(message.col),
         sampleEvent: (message) => delimText.textContent = prepareStringTable(message.sample, 6, 8, 8)
     };
 

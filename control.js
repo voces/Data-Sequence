@@ -22,6 +22,34 @@
 
     });
 
+    function blur() {
+
+        sections[position].container.style.display = "none";
+
+        if (sections[position].blur) sections[position].blur();
+
+    }
+
+    function focus() {
+
+        sections[position].container.style.display = "block";
+
+        if (sections[position].hideControls) controls.style.display = "none";
+        else controls.style.display = "block";
+
+        console.log(sections[position].disableNext);
+        if (sections[position].disableNext) {
+            next.disabled = true;
+            console.log("true");
+        } else {
+            next.disabled = false;
+            console.log("false");
+        }
+
+        if (sections[position].focus) sections[position].focus();
+
+    }
+
     function goBack() {
 
         if (position === 0) {
@@ -31,18 +59,11 @@
 
         }
 
-        sections[position].container.style.display = "none";
-
-        if (sections[position].blur) sections[position].blur();
+        blur();
 
         position--;
 
-        sections[position].container.style.display = "block";
-
-        if (sections[position].hideControls) controls.style.display = "none";
-        else controls.style.display = "block";
-
-        if (sections[position].focus) sections[position].focus();
+        focus();
 
     }
 
@@ -55,21 +76,11 @@
 
         }
 
-        sections[position].container.style.display = "none";
-
-        if (sections[position].blur) sections[position].blur();
+        blur();
 
         position++;
 
-        sections[position].container.style.display = "block";
-
-        if (sections[position].hideControls) controls.style.display = "none";
-        else controls.style.display = "block";
-
-        if (sections[position].focus) {
-            sections[position].focus();
-            console.log("focus", position);
-        }
+        focus();
 
     }
 
@@ -77,5 +88,9 @@
         goNext: goNext,
         goBack: goBack
     };
+
+    Object.defineProperty(window.control, "section", {
+        get: () => sections[position]
+    })
 
 }(window));

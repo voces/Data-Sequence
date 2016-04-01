@@ -33,6 +33,11 @@ button {
     outline: none;
 }
 
+button[disabled] {
+    color: #ccc;
+    background-color: #44a;
+}
+
 section {
     position: absolute;
     left: 1em;
@@ -200,8 +205,9 @@ select > option::selection {
 
 #results-save-button {
     position: absolute;
-    bottom: 1em;
-    right: 2em;
+    top: 6.9em;
+    right: 1.2em;
+    width: 6.75em;
 }
 
 #results-text {

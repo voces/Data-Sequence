@@ -7,6 +7,7 @@
         worker = window.worker,
 
         fileUpload, fileUploadHeader, fileUploadButton, fileUploadInput,
+        filePath,
 
         fs = require("fs");
 
@@ -17,18 +18,24 @@
         fileUploadButton = document.getElementById("file-upload-button");
         fileUploadInput = document.getElementById("file-upload-input");
 
-        window.sections.push({container: fileUpload, hideControls: true, focus: () => fileUploadInput.value = ""});
+        window.sections.push({
+            name: "fileUpload",
+            container: fileUpload,
+            hideControls: true,
+            focus: () => fileUploadInput.value = ""
+        });
 
         fileUploadButton.addEventListener("click", () => fileUploadInput.click());
 
         fileUploadInput.addEventListener("change", function(e) {
-            // readFile(this.files[0]);
+            filePath = fileUploadInput.files[0].path;
             control.goNext();
         });
 
     });
 
     document.addEventListener("dragover", function(e) {
+        if (control.section.name !== "fileUpload") return;
 
         let dt = e.dataTransfer;
         if (dt.types !== null && dt.types.indexOf('Files') !== -1) {
@@ -46,6 +53,7 @@
     let dragOutTimer;
 
     document.addEventListener("dragleave", function(e) {
+        if (control.section.name !== "fileUpload") return;
 
         dragOutTimer = window.setTimeout(function() {
             fileUpload.style.borderColor = "";
@@ -54,23 +62,17 @@
 
     });
 
-    // function readFile(file, callback) {
-    //     worker.postMessage({file: file, row: delimRow.value, col: delimCol.value});
-    // }
-
     document.addEventListener("drop", function(e) {
-
         e.preventDefault();
+        if (control.section.name !== "fileUpload") return;
 
-        // readFile(e.dataTransfer.files[0]);
+        fileUpload.style.borderColor = "";
+        fileUploadHeader.style.color = "";
 
+        filePath = e.dataTransfer.files[0].path;
         control.goNext();
-
     });
 
-    window.file = () => {
-        if (fileUploadInput) return fileUploadInput.files[0].path;
-        else return null;
-    }
+    window.file = () => filePath;
 
 }(window));
